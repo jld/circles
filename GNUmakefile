@@ -14,3 +14,10 @@ sc%: sc%.c
 
 clean:
 	-rm -f *.png
+
+ssc%.png: sc%.png
+	convert -geometry 128x128 -depth 8 -filter box $< $@
+
+small: ssc1.png ssc2.png ssc3.png ssc4.png ssc5.png ssc6.png ssc7.png ssc8.png ssc9.png	
+
+both: all small
