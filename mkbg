@@ -17,9 +17,10 @@ else maxdim=$height off=$(((height-width)/2))
      flags="-Dxmin=$off -Dxmax=$((maxdim-off))"
 fi
 
+trap "rm -f sc-tmp.c sc-tmp" INT QUIT HUP TERM
 m4 -Dprogress $flags $prog.c.m4 > sc-tmp.c
 cc -O3 sc-tmp.c -o sc-tmp
-rm -rf sc-tmp.c
+rm -f sc-tmp.c
 time ./sc-tmp $maxdim 16 \
   | convert -depth 8 -comment "`cat LICENSE`" - $output
 rm -f sc-tmp
