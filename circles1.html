@@ -1,0 +1,95 @@
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>Circles, and Circles, and Circles... (Intro/#1)</title>
+<link rev="made" href="mailto:xlwww%40jdev.users.panix.com" />
+<link rel="next" href="circles2.html" />
+<link rel="stylesheet" type="text/css" href="../../style/site.css" />
+</head><body><div class="header"><h1 class="itempath">
+<a href="../../.">XLERB</a> &gt; <a href="../.">Imagery</a> &gt; <a href=".">Circles</a>: </h1>
+<small class="itemcont">
+ <span class="compat">&rarr;</span>
+   <strong class="thisitem">[Intro/#1]</strong>
+   <span class="compat">&larr;</span>
+ <a href="circles2.html">[#2]</a>
+ <a href="circles3.html">[#3]</a>
+ <a href="circles4.html">[#4]</a>
+ <a href="circles5.html">[#5]</a>
+ <a href="circles6.html">[#6]</a>
+ <a href="circles7.html">[#7]</a>
+ <a href="circles8.html">[#8]</a>
+ <a href="circles9.html">[#9]</a>
+ <a href="prog.html">[The Program]</a>
+ </small></div><hr class="compat"/>
+
+
+
+<p>It all started when I ran across <a
+href="http://www.chriscoyne.com/cfdg/">Chris Coyne's Context-Free
+Design Grammar</a> &mdash; in particular, <a
+href="http://www.chriscoyne.com/cfdg/page3.php">the second
+example</a>, which demonstrates a sort of recursive definition of a
+square (which may be familiar to anyone who's played with
+affine-transform-based fractals enough (e.g., me)) is applied to a
+circle, the result being that the tree of successively smaller circles
+more or less fills the square.&nbsp; (This is more easily seen than
+described, I think.)</p>
+
+<p>Looking at that, I wondered what one might be able to do by,
+instead of taking a circle and scaling it down and translating in
+various directions and figuring which points belonged inside one of
+those many circles, one used a more <!-- hyperlinkme -->
+ray-tracing-ish approach: start with the point to be drawn, then scale
+it up until it hits the circle.</p>
+
+<p>So I did that, with a <!-- hyperlinkme? --> small C program, but it
+looked kind of boring, even with alternating black and white circles
+at successive levels of detail so it wouldn't just be a big
+solid-colored square.&nbsp; And then it occurred to me to draw an inverted
+(that is, inside-out) circle around the outside (conveniently covering
+the one fixed point), and:<p>
+
+<p><img src="sc1.png" alt="[Image: sc1.png]" /></p>
+
+<p>What's going on here mathematically, and in the program, looks like this:</p>
+<p><table cellpadding="0" cellspacing="0" border="0"><tr>
+<td align="right">f(x,y) =</td>
+<td align="left">0</td>
+<td align="left"><strong>if</strong> x<sup>2</sup>+y<sup>2</sup> &lt; 0.08</td>
+</tr><tr>
+<td align="right">=</td>
+<td align="left">1</td>
+<td align="left"><strong>if</strong> x<sup>2</sup>+y<sup>2</sup> &gt; 1.125</td>
+</tr><tr>
+<td align="right">=</td>
+<td align="left">f(2*|x|-1,2*|y|-1)</td>
+<td align="left"><strong>otherwise</strong></td>
+</tr>
+</table></p>
+
+<p>I'm using reflection (absolute value) rather than translation
+(modulo) for mapping the four squares onto one while scaling; it's a
+little easier to write (both in math and C) and, thanks to symmetry,
+there's no difference.&nbsp; The radii of the circles were chosen,
+through fairly simple algebra, such that they'd line up a certain way
+with the smaller scales; compared to other values I tried that line up
+in different ways, I thought these looked nicer.&nbsp; Oh, and for those
+who've noticed that that function isn't defined even for all rational
+inputs, let alone reals: yes, I know, but it's good enough for
+computer floating-point.</p>
+
+<p>A more traditional-graphics way of looking at the process is that
+you start at some infinitely small level, draw a grid of infinitely
+many black circles and white inverse-circles-clipped-by-a-square, then
+go up the the next larger level and repeat.&nbsp; Not very practical, of
+course, but useful as a model.</p>
+
+
+<p><a href="circles2.html">But wait!  There's more!</a></p>
+
+<hr />
+<div align="right"><small><a href="mailto:xlwww&#64;jdev.users.panix.com">In case someone reads this and wants to send me mail about it, here's a link.</a></small></div>
+</body>
+</html>
