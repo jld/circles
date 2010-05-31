@@ -11,6 +11,8 @@ define(do_stuff,
 {{ifelse($2,, {{do_body($1)}},
    {{do_test($2) do_body($1)
             else do_stuff(shift(shift($@)))}})}})
+ifdef(imgsize,, define(imgsize, atoi(argv[1])))
+ifdef(subsamp,, define(subsamp, atoi(argv[2])))
 ifdef(ymin,, define(ymin, 0))
 ifdef(ymax,, define(ymax, l1))
 ifdef(xmin,, define(xmin, 0))
@@ -29,8 +31,10 @@ int main(int argc, char** argv)
   int x1, y1, x2, y2, l1, l2, ri;
   static double rnd[512];
 
-  assert(l1=atoi(argv[1])); 
-  assert(l2=atoi(argv[2]));
+  l1=imgsize;
+  l2=subsamp;
+  assert(l1>0);
+  assert(l2>0);
   srand48(time(0));
   for(ri=0; ri<512; ++ri)
     rnd[ri] = drand48();

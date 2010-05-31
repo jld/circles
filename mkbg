@@ -6,21 +6,18 @@ then echo "Usage: $0 sc[N] [width] [height] [output file]" >&2
 fi
 
 prog=$1
-width=$2
-height=$3
+xdim=$2
+ydim=$3
 output=$4
 
-if [ $width -gt $height ]
-then maxdim=$width  off=$(((width-height)/2))
-     flags="-Dymin=$off -Dymax=$((maxdim-off))"
-else maxdim=$height off=$(((height-width)/2))
-     flags="-Dxmin=$off -Dxmax=$((maxdim-off))"
+if [ $xdim -gt $ydim ]
+then off=$(((xdim-ydim)/2))
+     flags="-Dimgsize=$xdim -Dymin=$off -Dymax=$((xdim-off))"
+else off=$(((ydim-xdim)/2))
+     flags="-Dimgsize=$ydim -Dxmin=$off -Dxmax=$((ydim-off))"
 fi
 
-trap "rm -f sc-tmp.c sc-tmp" INT QUIT HUP TERM
-m4 -Dprogress $flags $prog.c.m4 > sc-tmp.c
+trap "rm -f sc-tmp.c sc-tmp" INT QUIT HUP TERM 0
+m4 -Dprogress $flags -Dsubsamp=16 $prog.c.m4 > sc-tmp.c
 cc -O3 sc-tmp.c -o sc-tmp
-rm -f sc-tmp.c
-time ./sc-tmp $maxdim 16 \
-  | convert -depth 8 -comment "`cat LICENSE`" - $output
-rm -f sc-tmp
+time ./sc-tmp | convert -depth 8 -comment "`cat LICENSE`" - $output
