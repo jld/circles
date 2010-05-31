@@ -18,7 +18,7 @@ CONVERT=convert -comment "`cat LICENSE`" -depth $(PNGDEPTH)
 sc%: sc%.c
 	$(CC) -O3 $< -o $@
 
-%.c: %.c.m4
+%.c: %.c.m4 sqcirc.m4
 	m4 $< > $@
 
 clean:
