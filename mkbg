@@ -1,0 +1,25 @@
+#!/bin/sh
+set -e
+if [ $# -lt 4 ]
+then echo "Usage: $0 sc[N] [width] [height] [output file]" >&2
+     exit 1
+fi
+
+prog=$1
+width=$2
+height=$3
+output=$4
+
+if [ $width -gt $height ]
+then maxdim=$width  off=$(((width-height)/2))
+     flags="-Dymin=$off -Dymax=$((maxdim-off))"
+else maxdim=$height off=$(((height-width)/2))
+     flags="-Dxmin=$off -Dxmax=$((maxdim-off))"
+fi
+
+m4 -Dprogress $flags $prog.c.m4 > sc-tmp.c
+cc -O3 sc-tmp.c -o sc-tmp
+rm -rf sc-tmp.c
+time ./sc-tmp $maxdim 16 \
+  | convert -depth 8 -comment "`cat LICENSE`" - $output
+rm -f sc-tmp

@@ -11,6 +11,12 @@ define(do_stuff,
 {{ifelse($2,, {{do_body($1)}},
    {{do_test($2) do_body($1)
             else do_stuff(shift(shift($@)))}})}})
+ifdef(ymin,, define(ymin, 0))
+ifdef(ymax,, define(ymax, l1))
+ifdef(xmin,, define(xmin, 0))
+ifdef(xmax,, define(xmax, l1))
+define(show_progress,ifdef({{progress}},
+{{{{fprintf(stderr,"%d/%d\r",y1-ymin,ymax-ymin)}}}}))
 define(sqcirc,
 {{#include <stdio.h>
 #include <stdlib.h>
@@ -29,10 +35,11 @@ int main(int argc, char** argv)
   for(ri=0; ri<512; ++ri)
     rnd[ri] = drand48();
 
-  printf("P2\n%d %d %d\n",l1,l1,l2*l2);
+  printf("P2\n%d %d %d\n",xmax-xmin,ymax-ymin,l2*l2);
 
-  for(y1=0; y1<l1; ++y1) {
-    for(x1=0; x1<l1; ++x1) {
+  for(y1=ymin; y1<ymax; ++y1) {
+    show_progress;
+    for(x1=xmin; x1<xmax; ++x1) {
       int a=0;
       for(y2=0; y2<l2; ++y2) {
 	double yc=(y1+(y2+rnd[ri++%512])/l2)/l1;
@@ -51,6 +58,7 @@ int main(int argc, char** argv)
     }
     putchar('\n');
   }
+  show_progress;
   return 0;
 }
 }})
