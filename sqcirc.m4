@@ -12,7 +12,7 @@ define(do_stuff,
    {{do_test($2) do_body($1)
             else do_stuff(shift(shift($@)))}})}})
 ifdef(imgsize,, define(imgsize, atoi(argv[1])))
-ifdef(subsamp,, define(subsamp, atoi(argv[2])))
+ifdef(supsamp,, define(supsamp, atoi(argv[2])))
 ifdef(ymin,, define(ymin, 0))
 ifdef(ymax,, define(ymax, l1))
 ifdef(xmin,, define(xmin, 0))
@@ -32,7 +32,7 @@ int main(int argc, char** argv)
   static double rnd[512];
 
   l1=imgsize;
-  l2=subsamp;
+  l2=supsamp;
   assert(l1>0);
   assert(l2>0);
   srand48(time(0));

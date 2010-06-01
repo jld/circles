@@ -18,6 +18,6 @@ else off=$(((ydim-xdim)/2))
 fi
 
 trap "rm -f sc-tmp.c sc-tmp" INT QUIT HUP TERM 0
-m4 -Dprogress $flags -Dsubsamp=16 $prog.c.m4 > sc-tmp.c
+m4 -Dprogress $flags -Dsupsamp=16 $prog.c.m4 > sc-tmp.c
 cc -O3 sc-tmp.c -o sc-tmp
 time ./sc-tmp | convert -depth 8 -comment "`cat LICENSE`" - $output
